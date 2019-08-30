@@ -1,0 +1,24 @@
+/* You can add global styles to this file, and also import other style files */
+
+html {
+  height: 100vh;
+}
+
+body {
+  min-height: 100vh;
+}
+
+.dynamic-component__label {
+  position: absolute;
+  top: -20px;
+  left: 5px;
+}
+
+app-cmp1, app-cmp2, app-cmp3, app-cmp4 {
+  flex: 1;
+  display: flex;
+  border: 5px solid black;
+  padding: 40px;
+  position: relative;
+  color: white
+}

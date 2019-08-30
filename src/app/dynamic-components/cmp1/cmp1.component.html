@@ -1,0 +1,9 @@
+<h1 class="dynamic-component__label">
+  C1
+</h1>
+
+<ng-container *ngFor="let dynamicComponentConfig of dynamicComponentConfigs">
+  <app-dynamic-component-loader [dynamicComponentConfig]="dynamicComponentConfig">
+  </app-dynamic-component-loader>
+</ng-container>
+
