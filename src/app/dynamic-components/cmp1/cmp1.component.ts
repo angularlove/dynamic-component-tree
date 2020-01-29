@@ -8,4 +8,7 @@ import {DynamicComponentBase} from '../dynamic-component-base';
   styleUrls: ['./cmp1.component.scss']
 })
 export class Cmp1Component extends DynamicComponentBase {
+  onCmpRef(test) {
+    console.log(test);
+  }
 }

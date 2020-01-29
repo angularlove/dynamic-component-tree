@@ -2,8 +2,11 @@
   C1
 </h1>
 
+
 <ng-container *ngFor="let dynamicComponentConfig of dynamicComponentConfigs">
-  <app-dynamic-component-loader [dynamicComponentConfig]="dynamicComponentConfig">
-  </app-dynamic-component-loader>
+  <ng-template (cmpRef)="onCmpRef($event)" [appDynamicComponentLoader]="dynamicComponentConfig">
+  </ng-template>
+
+  <ng-container (cmpRef)="onCmpRef($event)" *appDynamicComponentLoader="dynamicComponentConfig"></ng-container>
 </ng-container>
 
