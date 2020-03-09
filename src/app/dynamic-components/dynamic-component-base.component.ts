@@ -1,6 +1,7 @@
-import {Input} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {DynamicComponentConfig} from '../models/dynamic-component-config.model';
 
-export abstract class DynamicComponentBase {
+@Component({template: ''})
+export abstract class DynamicComponentBaseComponent {
   @Input() dynamicComponentConfigs: DynamicComponentConfig[];
 }

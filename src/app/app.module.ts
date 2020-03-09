@@ -11,7 +11,6 @@ import {DynamicComponentLoaderDirective} from './dynamic-components/dynamic-comp
     ...dynamicComponents,
     DynamicComponentLoaderDirective,
   ],
-  entryComponents: [...dynamicComponents],
   imports: [
     BrowserModule,
     AppRoutingModule

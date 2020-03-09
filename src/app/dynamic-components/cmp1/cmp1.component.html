@@ -6,7 +6,5 @@
 <ng-container *ngFor="let dynamicComponentConfig of dynamicComponentConfigs">
   <ng-template (cmpRef)="onCmpRef($event)" [appDynamicComponentLoader]="dynamicComponentConfig">
   </ng-template>
-
-  <ng-container (cmpRef)="onCmpRef($event)" *appDynamicComponentLoader="dynamicComponentConfig"></ng-container>
 </ng-container>
 

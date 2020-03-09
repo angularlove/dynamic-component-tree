@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {DynamicComponentBase} from '../dynamic-component-base';
+import {DynamicComponentBaseComponent} from '../dynamic-component-base.component';
 
 
 @Component({
@@ -7,7 +7,7 @@ import {DynamicComponentBase} from '../dynamic-component-base';
   templateUrl: './cmp1.component.html',
   styleUrls: ['./cmp1.component.scss']
 })
-export class Cmp1Component extends DynamicComponentBase {
+export class Cmp1Component extends DynamicComponentBaseComponent {
   onCmpRef(test) {
     console.log(test);
   }
