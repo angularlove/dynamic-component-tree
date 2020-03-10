@@ -1,6 +1,6 @@
-import {Component} from '@angular/core';
+import {Component, NgModule} from '@angular/core';
 import {DynamicComponentBaseComponent} from '../dynamic-component-base.component';
-
+import {SharedModule} from '../../shared.module';
 
 @Component({
   selector: 'app-cmp2',
@@ -8,4 +8,11 @@ import {DynamicComponentBaseComponent} from '../dynamic-component-base.component
   styleUrls: ['./cmp2.component.scss']
 })
 export class Cmp2Component extends DynamicComponentBaseComponent {
+}
+
+@NgModule({
+  declarations: [Cmp2Component],
+  imports: [SharedModule]
+})
+export class Cmp2Module {
 }

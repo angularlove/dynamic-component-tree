@@ -1,37 +1,41 @@
-import {ComponentFactoryResolver, ComponentRef, Directive, EventEmitter, Input, Output, Type, ViewContainerRef} from '@angular/core';
+import {ComponentFactoryResolver, Directive, Input, Type, ViewContainerRef} from '@angular/core';
 import {DynamicComponentConfig} from '../../models/dynamic-component-config.model';
 import {DynamicComponentBaseComponent} from '../dynamic-component-base.component';
 import {DynamicComponentType} from '../../enums/dynamic-component-type.enum';
 
 const dynamicImportsMap = {
-  [DynamicComponentType.cmp1]: () => import('src/app/dynamic-components/cmp1/cmp1.component'),
-  [DynamicComponentType.cmp2]: () => import('src/app/dynamic-components/cmp2/cmp2.component'),
-  [DynamicComponentType.cmp3]: () => import('src/app/dynamic-components/cmp3/cmp3.component'),
-  [DynamicComponentType.cmp4]: () => import('src/app/dynamic-components/cmp4/cmp4.component')
+  [DynamicComponentType.cmp1]: () => import('../cmp1/cmp1.component'),
+  [DynamicComponentType.cmp2]: () => import('../cmp2/cmp2.component'),
+  [DynamicComponentType.cmp3]: () => import('../cmp3/cmp3.component'),
+  [DynamicComponentType.cmp4]: () => import('../cmp4/cmp4.component')
 };
 
 @Directive({
   selector: '[appDynamicComponentLoader]'
 })
 export class DynamicComponentLoaderDirective {
-
-  @Output() cmpRef = new EventEmitter<ComponentRef<DynamicComponentBaseComponent>>();
-
   constructor(private componentFactoryResolver: ComponentFactoryResolver, private viewContainerRef: ViewContainerRef) {
   }
 
   @Input() set appDynamicComponentLoader(dynamicComponentConfig: DynamicComponentConfig) {
-    this.resolveCmpClassRef(dynamicComponentConfig.type).then((cmp) => this.createDynamicCmp(cmp, dynamicComponentConfig.content));
+    this.loadComponent(dynamicComponentConfig);
   }
 
-  private resolveCmpClassRef(dynamicComponentType: DynamicComponentType): Promise<Type<DynamicComponentBaseComponent>> {
-    return (dynamicImportsMap[dynamicComponentType]() as any).then(module => Object.values(module)[0]);
+  private loadComponent(dynamicComponentConfig: DynamicComponentConfig) {
+    this.resolveCmpClass<DynamicComponentBaseComponent>(dynamicImportsMap[dynamicComponentConfig.type]).then(cmpClass => {
+      const cmpFactory = this.componentFactoryResolver.resolveComponentFactory(cmpClass);
+      const cmpRef = this.viewContainerRef.createComponent(cmpFactory);
+      (cmpRef.instance as DynamicComponentBaseComponent).dynamicComponentConfigs = dynamicComponentConfig.content;
+    });
   }
 
-  private createDynamicCmp(dynamicComponent: Type<DynamicComponentBaseComponent>, content: DynamicComponentConfig[]): void {
-    const componentFactory = this.componentFactoryResolver.resolveComponentFactory<DynamicComponentBaseComponent>(dynamicComponent);
-    const componentRef = this.viewContainerRef.createComponent(componentFactory);
-    (componentRef.instance as DynamicComponentBaseComponent).dynamicComponentConfigs = content;
-    this.cmpRef.emit(componentRef);
+  private resolveCmpClass<T>(importFn: () => any): Promise<Type<T>> {
+    return importFn().then(module => {
+      const cmpClass = Object.values(module).find(val => val.hasOwnProperty('ɵcmp'));
+      if (!cmpClass) {
+        throw new Error('No exported component found!');
+      }
+      return cmpClass;
+    });
   }
 }
